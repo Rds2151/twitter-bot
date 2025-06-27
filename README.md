@@ -1,94 +1,50 @@
-# Eliza
+# Copycat Bot
 
-## Edit the character files
+This project is a Twitter bot that replies to mentions by echoing the message content minus the bot's Twitter handle. It is built using the ElizaOS framework.
 
-Open `src/character.ts` to modify the default character. Uncomment and edit.
+## Prerequisites
 
-### Custom characters
-
-To load custom characters instead:
-- Use `pnpm start --characters="path/to/your/character.json"`
-- Multiple character files can be loaded simultaneously
-
-### Add clients
-```
-# in character.ts
-clients: [Clients.TWITTER, Clients.DISCORD],
-
-# in character.json
-clients: ["twitter", "discord"]
-```
-
-## Duplicate the .env.example template
+- Bun runtime (https://bun.sh/)
+- A Twitter developer account with API credentials (if applicable)
+- Environment variables configured in a `.env` file as follows:
 
 ```bash
-cp .env.example .env
+GOOGLE_GENERATIVE_AI_API_KEY= # Gemini API key
+
+TWITTER_DRY_RUN=false
+TWITTER_USERNAME= # Account username
+TWITTER_PASSWORD= # Account password
+TWITTER_EMAIL= # Account email
+
+BOT_HANDLE=
+
+ELIZA_LOG_LEVEL=info
 ```
 
-\* Fill out the .env file with your own values.
+## Installation
 
-### Add login credentials and keys to .env
-```
-DISCORD_APPLICATION_ID="discord-application-id"
-DISCORD_API_TOKEN="discord-api-token"
-...
-OPENROUTER_API_KEY="sk-xx-xx-xxx"
-...
-TWITTER_USERNAME="username"
-TWITTER_PASSWORD="password"
-TWITTER_EMAIL="your@email.com"
-```
-
-## Install dependencies and start your agent
+1. Clone the repository:
 
 ```bash
-pnpm i && pnpm start
-```
-Note: this requires node to be at least version 22 when you install packages and run the agent.
-
-## Run with Docker
-
-### Build and run Docker Compose (For x86_64 architecture)
-
-#### Edit the docker-compose.yaml file with your environment variables
-
-```yaml
-services:
-    eliza:
-        environment:
-            - OPENROUTER_API_KEY=blahdeeblahblahblah
+git clone https://github.com/Rds2151/twitter-bot.git
+cd twitter-bot
 ```
 
-#### Run the image
+2. Install dependencies using Bun:
 
 ```bash
-docker compose up
+bun install
+bun add @elizaos/plugin-twitter
 ```
 
-### Build the image with Mac M-Series or aarch64
+## Configuration
 
-Make sure docker is running.
+Set the environment variables in a `.env` file in the project root as shown above. Make sure to fill in your Twitter account credentials and API keys.
+
+## Running the Bot
+
+To start the bot, run:
 
 ```bash
-# The --load flag ensures the built image is available locally
-docker buildx build --platform linux/amd64 -t eliza-starter:v1 --load .
+elizaos start --character characters/eliza.character.json
 ```
-
-#### Edit the docker-compose-image.yaml file with your environment variables
-
-```yaml
-services:
-    eliza:
-        environment:
-            - OPENROUTER_API_KEY=blahdeeblahblahblah
-```
-
-#### Run the image
-
-```bash
-docker compose -f docker-compose-image.yaml up
-```
-
-# Deploy with Railway
-
-[![Deploy on Railway](https://railway.com/button.svg)](https://railway.com/template/aW47_j)# twitter-bot
